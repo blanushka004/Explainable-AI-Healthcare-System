@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Explainable AI Healthcare System</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+    <h1>🩺 Explainable AI Healthcare Early Warning System</h1>
+    <p>AI-powered cardiovascular risk assessment and decision support</p>
+</header>
+
+
+<div class="container">
+
+    <!-- Patient Input Section -->
+
+    <section class="card">
+
+        <h2>Patient Information</h2>
+
+        <div class="form-grid">
+
+            <label>
+                Age
+                <input id="age" type="number" min="18" max="100" value="65" required>
+            </label>
+
+            <label>
+                Sex (0=Female, 1=Male)
+                <input id="sex" type="number" min="0" max="1" value="1" required>
+            </label>
+
+            <label>
+                Chest Pain Type (1-4)
+                <input id="cp" type="number" min="1" max="4" value="3" required>
+            </label>
+
+            <label>
+                Blood Pressure
+                <input id="trestbps" type="number" min="70" max="250" value="160" required>
+            </label>
+
+            <label>
+                Cholesterol
+                <input id="chol" type="number" min="100" max="600" value="280" required>
+            </label>
+
+            <label>
+                Fasting Blood Sugar
+                <input id="fbs" type="number" min="0" max="1" value="1" required>
+            </label>
+
+            <label>
+                Rest ECG
+                <input id="restecg" type="number" min="0" max="2" value="1" required>
+            </label>
+
+            <label>
+                Maximum Heart Rate
+                <input id="thalach" type="number" min="40" max="250" value="90" required>
+            </label>
+
+            <label>
+                Exercise Angina
+                <input id="exang" type="number" min="0" max="1" value="1" required>
+            </label>
+
+            <label>
+                Oldpeak
+                <input id="oldpeak" type="number" min="0" max="10" step="0.1" value="3" required>
+            </label>
+
+            <label>
+                Slope (1-3)
+                <input id="slope" type="number" min="1" max="3" value="2" required>
+            </label>
+
+            <label>
+                CA
+                <input id="ca" type="number" min="0" max="3" value="2" required>
+            </label>
+
+            <label>
+                Thal (3, 6, or 7)
+                <input id="thal" type="number" min="3" max="7" step="1" value="3" required>
+            </label>
+
+        </div>
+
+
+        <button id="predictButton" onclick="predictRisk()">
+            Predict Heart Risk
+        </button>
+
+    </section>
+
+
+
+    <!-- Result Section -->
+
+    <section id="result" class="card hidden">
+
+        <h2>Risk Assessment</h2>
+
+        <div id="riskBox"></div>
+
+        <h3>Early Warning</h3>
+        <p id="warning"></p>
+        <p id="explainabilityStatus" class="status-message hidden"></p>
+
+
+        <h3>Recommendations</h3>
+        <div id="recommendations"></div>
+
+
+        <section class="explainability-panel" aria-labelledby="explainability-heading">
+            <div class="explainability-heading">
+                <h3 id="explainability-heading">Explainable AI &mdash; Risk Factor Analysis</h3>
+                <p>Longer bars indicate stronger influence on this prediction.</p>
+            </div>
+
+            <div class="factor-groups">
+                <section class="factor-group factor-group--increasing" aria-labelledby="increasing-risk-heading">
+                    <h4 id="increasing-risk-heading">Factors Increasing Risk</h4>
+                    <div id="riskFactors" class="factor-list"></div>
+                </section>
+
+                <section class="factor-group factor-group--decreasing" aria-labelledby="decreasing-risk-heading">
+                    <h4 id="decreasing-risk-heading">Factors Reducing Model Risk</h4>
+                    <div id="safeFactors" class="factor-list"></div>
+                </section>
+            </div>
+        </section>
+
+    </section>
+
+
+</div>
+
+<section class="container">
+    <section class="card">
+        <div class="history-heading">
+            <div>
+                <h2>Prediction History</h2>
+                <p>Saved decision-support predictions from PostgreSQL.</p>
+            </div>
+            <button class="history-button" type="button" onclick="loadHistory()">Refresh History</button>
+        </div>
+        <p id="historyStatus" class="status-message" aria-live="polite"></p>
+        <div class="history-table-wrapper">
+            <table id="historyTable" class="history-table hidden">
+                <thead>
+                    <tr><th>Date</th><th>Age</th><th>Prediction</th><th>Probability</th><th>Risk</th></tr>
+                </thead>
+                <tbody id="historyBody"></tbody>
+            </table>
+        </div>
+    </section>
+</section>
+
+
+<script src="script.js"></script>
+
+</body>
+</html>
