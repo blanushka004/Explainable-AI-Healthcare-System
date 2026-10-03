@@ -1,8 +1,6 @@
-from .database import Base, engine
-from . import models  # noqa: F401 - registers the Prediction table
-
-print("Creating database tables...")
-
-Base.metadata.create_all(bind=engine)
-
-print("Database tables created successfully!")
+from backend.database import Base, engine, ensure_legacy_columns
+from backend import models
+if __name__ == "__main__":
+    Base.metadata.create_all(engine)
+    ensure_legacy_columns()
+    print("Database tables are ready. Existing records were retained.")

@@ -1,171 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Explainable AI Healthcare System</title>
-
-    <link rel="stylesheet" href="style.css">
-</head>
-
+﻿<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clarity Â· Explainable Healthcare</title><link rel="stylesheet" href="/static/style.css?v=20260909-5"></head>
 <body>
-
-<header>
-    <h1>🩺 Explainable AI Healthcare Early Warning System</h1>
-    <p>AI-powered cardiovascular risk assessment and decision support</p>
-</header>
-
-
-<div class="container">
-
-    <!-- Patient Input Section -->
-
-    <section class="card">
-
-        <h2>Patient Information</h2>
-
-        <div class="form-grid">
-
-            <label>
-                Age
-                <input id="age" type="number" min="18" max="100" value="65" required>
-            </label>
-
-            <label>
-                Sex (0=Female, 1=Male)
-                <input id="sex" type="number" min="0" max="1" value="1" required>
-            </label>
-
-            <label>
-                Chest Pain Type (1-4)
-                <input id="cp" type="number" min="1" max="4" value="3" required>
-            </label>
-
-            <label>
-                Blood Pressure
-                <input id="trestbps" type="number" min="70" max="250" value="160" required>
-            </label>
-
-            <label>
-                Cholesterol
-                <input id="chol" type="number" min="100" max="600" value="280" required>
-            </label>
-
-            <label>
-                Fasting Blood Sugar
-                <input id="fbs" type="number" min="0" max="1" value="1" required>
-            </label>
-
-            <label>
-                Rest ECG
-                <input id="restecg" type="number" min="0" max="2" value="1" required>
-            </label>
-
-            <label>
-                Maximum Heart Rate
-                <input id="thalach" type="number" min="40" max="250" value="90" required>
-            </label>
-
-            <label>
-                Exercise Angina
-                <input id="exang" type="number" min="0" max="1" value="1" required>
-            </label>
-
-            <label>
-                Oldpeak
-                <input id="oldpeak" type="number" min="0" max="10" step="0.1" value="3" required>
-            </label>
-
-            <label>
-                Slope (1-3)
-                <input id="slope" type="number" min="1" max="3" value="2" required>
-            </label>
-
-            <label>
-                CA
-                <input id="ca" type="number" min="0" max="3" value="2" required>
-            </label>
-
-            <label>
-                Thal (3, 6, or 7)
-                <input id="thal" type="number" min="3" max="7" step="1" value="3" required>
-            </label>
-
-        </div>
-
-
-        <button id="predictButton" onclick="predictRisk()">
-            Predict Heart Risk
-        </button>
-
-    </section>
-
-
-
-    <!-- Result Section -->
-
-    <section id="result" class="card hidden">
-
-        <h2>Risk Assessment</h2>
-
-        <div id="riskBox"></div>
-
-        <h3>Early Warning</h3>
-        <p id="warning"></p>
-        <p id="explainabilityStatus" class="status-message hidden"></p>
-
-
-        <h3>Recommendations</h3>
-        <div id="recommendations"></div>
-
-
-        <section class="explainability-panel" aria-labelledby="explainability-heading">
-            <div class="explainability-heading">
-                <h3 id="explainability-heading">Explainable AI &mdash; Risk Factor Analysis</h3>
-                <p>Longer bars indicate stronger influence on this prediction.</p>
-            </div>
-
-            <div class="factor-groups">
-                <section class="factor-group factor-group--increasing" aria-labelledby="increasing-risk-heading">
-                    <h4 id="increasing-risk-heading">Factors Increasing Risk</h4>
-                    <div id="riskFactors" class="factor-list"></div>
-                </section>
-
-                <section class="factor-group factor-group--decreasing" aria-labelledby="decreasing-risk-heading">
-                    <h4 id="decreasing-risk-heading">Factors Reducing Model Risk</h4>
-                    <div id="safeFactors" class="factor-list"></div>
-                </section>
-            </div>
-        </section>
-
-    </section>
-
-
-</div>
-
-<section class="container">
-    <section class="card">
-        <div class="history-heading">
-            <div>
-                <h2>Prediction History</h2>
-                <p>Saved decision-support predictions from PostgreSQL.</p>
-            </div>
-            <button class="history-button" type="button" onclick="loadHistory()">Refresh History</button>
-        </div>
-        <p id="historyStatus" class="status-message" aria-live="polite"></p>
-        <div class="history-table-wrapper">
-            <table id="historyTable" class="history-table hidden">
-                <thead>
-                    <tr><th>Date</th><th>Age</th><th>Prediction</th><th>Probability</th><th>Risk</th></tr>
-                </thead>
-                <tbody id="historyBody"></tbody>
-            </table>
-        </div>
-    </section>
+<section id="authScreen" class="authscreen"><div class="authpanel"><a class="brand" href="/"><span class="brandmark">C</span><span>clarity<small>EXPLAINABLE HEALTHCARE</small></span></a><p class="eyebrow">PRIVATE RESEARCH WORKSPACE</p><h1>Evidence, made visible.</h1><p class="muted">Sign in to review your own assessments. This educational tool is not a diagnosis.</p><div class="authswitch"><button id="showLogin" type="button">Sign in</button><button id="showRegister" type="button" class="secondary">Create account</button></div><form id="loginForm"><label>Email<input id="loginEmail" type="email" required autocomplete="email"></label><label>Password<input id="loginPassword" type="password" required autocomplete="current-password"></label><button type="submit">Sign in</button></form><form id="registerForm" class="hidden"><label>Display name<input id="registerName" required maxlength="120" autocomplete="name"></label><label>Email<input id="registerEmail" type="email" required autocomplete="email"></label><label>Password<input id="registerPassword" type="password" minlength="12" required autocomplete="new-password"></label><button type="submit">Create user account</button></form><div id="authError" class="error hidden" role="alert"></div></div></section>
+<aside class="sidebar"><a class="brand" href="/" aria-label="Clarity home"><span class="brandmark">C</span><span>clarity<small>EXPLAINABLE HEALTHCARE</small></span></a>
+<div id="workspaceLabel" class="navlabel">YOUR PRIVATE WORKSPACE</div><nav aria-label="Main navigation">
+<button data-tab="assessment" class="active" aria-current="page"><span>01</span>Assessment</button>
+<button data-tab="evaluation"><span>02</span>Model evaluation</button>
+<button data-tab="data"><span>03</span>Data & versions</button>
+<button data-tab="batch"><span>04</span>Batch analysis</button>
+<button data-tab="history"><span>05</span>Saved assessments</button></nav>
+<div class="sidefoot"><span class="statusdot"></span> <span id="accountLabel">Authenticated workspace</span><p>Educational use<br>No clinical deployment</p></div></aside>
+<main><header class="topbar"><span id="workspaceCrumb">Heart-health assessment / <b id="pageName">Assessment</b></span><span class="pill" id="modelStatus">Connectingâ€¦</span></header>
+<div id="error" class="error hidden" role="alert"></div>
+<section id="tab-assessment" class="tab">
+<div class="pagehead"><div><p id="assessmentEyebrow" class="eyebrow">YOUR RECORDED MEASUREMENTS</p><h1 id="assessmentTitle">Your heart-health assessment</h1><p id="assessmentLead">Enter recorded measurements to see your assessment score and what influenced it.</p></div><span id="assessmentTag" class="tag">13 measurements</span></div>
+<div id="assessmentNotice" class="notice">Use recorded report values. Do not guess specialized test measurements.</div>
+<section id="assessmentFormCard" class="card inputcard"><div class="sectionhead"><div><h2 id="measurementsHeading">Your measurements</h2><p id="measurementsLead">Use the values recorded in the report. The prefilled example is demonstration data.</p></div><button id="resetExample" class="secondary">Reset example</button></div>
+<form id="assessmentForm"><div id="featureForm" class="formgrid"></div><div class="formfoot"><small id="inputEncodingNote">All 13 measurements are required.</small><button id="assessButton" type="submit">Assess & explain <span>â†—</span></button></div></form></section>
+<div id="assessmentResult" class="hidden"></div>
 </section>
-
-
-<script src="script.js"></script>
-
-</body>
-</html>
+<section id="tab-evaluation" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">MEASURE BEFORE YOU TRUST</p><h1>Model evaluation.</h1><p>Training validation, internal test performance, and the errors behind the averages.</p></div></div><div id="evaluationContent"></div></section>
+<section id="tab-data" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">TRACE THE EVIDENCE</p><h1>Data & model lineage.</h1><p>Inspect the dataset, training reference ranges, and saved model versions.</p></div></div><div id="dataContent"></div></section>
+<section id="tab-batch" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">FROM ONE RECORD TO MANY</p><h1>Batch analysis.</h1><p>Validate and assess up to 250 records with row-level error reporting.</p></div></div>
+<section class="card"><div class="sectionhead"><div><h2>Upload a measurement CSV</h2><p>UTF-8 CSV Â· maximum 1 MB Â· exactly the 13 feature columns</p></div><button id="templateButton" class="secondary">Download template</button></div>
+<form id="batchForm"><label class="uploadbox" for="csvFile">Choose your CSV file<input id="csvFile" type="file" accept=".csv,text/csv" required></label><div class="formfoot"><small>Batch results are not saved to history. SHAP is available for individual assessments.</small><button id="batchButton" type="submit">Analyze CSV â†—</button></div></form><div id="batchResult"></div></section></section>
+<section id="tab-history" class="tab hidden"><div class="pagehead"><div><p id="historyEyebrow" class="eyebrow">REVIEW YOUR SAVED RESULTS</p><h1 id="historyTitle">Your saved assessments</h1><p id="historyLead">Reopen the measurements and result saved with each assessment.</p></div><button id="refreshHistory" class="secondary">Refresh</button></div>
+<section class="card"><div class="sectionhead"><h2>Assessment archive</h2><label id="historyBandLabel">Risk indicator <select id="historyBand"><option value="">All indicators</option><option>LOW</option><option value="MEDIUM">MODERATE</option><option>HIGH</option></select></label></div><div id="historyContent"></div><div class="pager"><button id="previousPage" class="secondary">â† Previous</button><span id="historyPage"></span><button id="nextPage" class="secondary">Next â†’</button></div><p id="legacyHistoryNote" class="muted">Older v1 predictions remain available through the <a href="/history" target="_blank" rel="noopener">legacy history API</a>; they do not have stored v2 explanations.</p></section></section>
+<footer>Clarity / Explainable Healthcare <span>Research evidence, with its limitations intact.</span></footer></main>
+<script src="/static/script.js?v=20260909-5" defer></script></body></html>

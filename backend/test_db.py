@@ -1,13 +1,7 @@
+"""Manual connectivity check: python -m backend.test_db"""
 from sqlalchemy import text
-
-from .database import engine
-
-try:
+from backend.database import engine
+if __name__=="__main__":
     with engine.connect() as connection:
-        result = connection.execute(text("SELECT version();"))
-        print("Database connected successfully!")
-        print(result.fetchone()[0])
-
-except Exception as e:
-    print("Database connection failed:")
-    print(e)
+        connection.execute(text("SELECT 1"))
+    print("Database connection succeeded.")

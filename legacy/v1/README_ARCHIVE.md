@@ -1,0 +1,1 @@
+Historical v1 artifacts and scripts, retained for reference. Their scores and plots do not describe the active v2 model. Do not execute these scripts against the v2 model directory. Use the project-root README and python -m src.train_model.
