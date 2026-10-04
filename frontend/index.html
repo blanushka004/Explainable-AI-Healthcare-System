@@ -1,7 +1,83 @@
-﻿<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clarity Â· Explainable Healthcare</title><link rel="stylesheet" href="/static/style.css?v=20260909-5"></head>
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Clarity · Explainable Healthcare</title><link rel="stylesheet" href="/static/style.css?v=20261004-1">
+<style>
+.authscreen{min-height:100vh;padding:clamp(24px,4vw,64px);background:linear-gradient(135deg,#f4f8f5 0%,#f8faf7 57%,#edf5f1 100%)}
+.auth-layout{width:min(100%,1200px);min-height:calc(100vh - 128px);margin:0 auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(380px,500px);align-items:center;gap:clamp(40px,6vw,100px)}
+.auth-overview{min-width:0;max-width:650px}
+.auth-overview .brand{width:max-content;margin-bottom:28px}
+.auth-tagline{margin:0 0 10px;color:var(--teal);font-size:12px;font-weight:700;letter-spacing:.08em}
+.auth-overview h1{max-width:640px;margin:0 0 20px;font-size:clamp(42px,4.4vw,64px);line-height:1.06}
+.auth-lead{max-width:600px;margin:0;color:var(--muted);font-size:16px;line-height:1.7}
+.auth-features{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:32px 0}
+.auth-feature{min-width:0;padding:16px 18px;border:1px solid var(--line);border-radius:8px;background:rgba(255,255,255,.75)}
+.auth-feature h2{margin:0 0 5px;color:var(--ink);font-size:14px}
+.auth-feature p{margin:0;color:var(--muted);font-size:12px;line-height:1.55}
+.auth-technology,.auth-disclaimer{max-width:610px;margin:0 0 8px;font-size:11px;line-height:1.6}
+.auth-technology{color:var(--ink);font-weight:600}
+.auth-disclaimer{color:var(--muted)}
+.authpanel{width:100%;max-width:500px;min-width:0;padding:clamp(24px,3vw,36px);border:1px solid var(--line);border-radius:12px;background:#fff;box-shadow:0 16px 48px rgba(23,58,57,.07);text-align:left}
+.authpanel h2{margin:0 0 8px;font:normal 32px/1.16 Georgia,serif;color:var(--ink)}
+.authpanel .auth-subtitle{max-width:440px;margin:0;color:var(--muted);font-size:13px}
+#loginForm,#registerForm,.authswitch{width:100%;max-width:460px}
+.authswitch{display:flex;gap:10px;margin:26px 0 24px}
+.authswitch button{flex:1 1 0;min-width:0}
+@media(max-width:900px){.auth-layout{min-height:0;max-width:680px;grid-template-columns:1fr;gap:32px}.auth-overview{max-width:none}.auth-overview .brand{margin-bottom:30px}.authpanel{max-width:500px}}
+@media(max-width:600px){.authscreen{padding:24px 20px 36px}.auth-overview h1{font-size:clamp(36px,9vw,46px)}.auth-lead{font-size:14px}.auth-features{grid-template-columns:1fr;gap:8px;margin:24px 0}.auth-feature{padding:12px 14px}.authpanel{padding:22px}.authpanel h2{font-size:28px}}
+#loginForm label,#registerForm label{display:block;width:100%;margin-bottom:14px}
+.authpanel input{box-sizing:border-box;width:100%;height:44px;padding:11px 12px;border:1px solid #cbd9d1;border-radius:6px;background:#fbfcfa;font:inherit}
+.authpanel input:focus{border-color:#2f716d;background:#fff}
+.auth-input-wrap{position:relative;width:100%;margin-top:6px}
+.auth-input-wrap input{margin-top:0;padding-right:52px}
+.password-toggle{position:absolute;right:6px;top:50%;transform:translateY(-50%);display:grid;place-items:center;width:38px;height:34px;padding:0;border:0;background:transparent;color:#315e5b;cursor:pointer}
+.password-toggle svg{display:block;width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.password-toggle .eye-closed,.password-toggle[aria-pressed="true"] .eye-open{display:none}
+.password-toggle[aria-pressed="true"] .eye-closed{display:block}
+.password-toggle:hover{background:#eef5ef;filter:none}
+.password-toggle:focus-visible{outline:2px solid #e2ac4c;outline-offset:1px}
+.password-rules{list-style:none;margin:8px 0 16px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px 12px;font-size:11px;color:#65736d}
+.password-rules li::before{content:"○";display:inline-block;width:16px;font-weight:700}
+.password-rules li.met{color:#24695f}
+.password-rules li.met::before{content:"✓"}
+.password-rules li.unmet{color:#9b4a40}
+.auth-field-hint{display:block;margin-top:5px;color:#65736d;font-size:10px;font-weight:400}
+@media(max-width:520px){.password-rules{grid-template-columns:1fr}}
+</style></head>
 <body>
-<section id="authScreen" class="authscreen"><div class="authpanel"><a class="brand" href="/"><span class="brandmark">C</span><span>clarity<small>EXPLAINABLE HEALTHCARE</small></span></a><p class="eyebrow">PRIVATE RESEARCH WORKSPACE</p><h1>Evidence, made visible.</h1><p class="muted">Sign in to review your own assessments. This educational tool is not a diagnosis.</p><div class="authswitch"><button id="showLogin" type="button">Sign in</button><button id="showRegister" type="button" class="secondary">Create account</button></div><form id="loginForm"><label>Email<input id="loginEmail" type="email" required autocomplete="email"></label><label>Password<input id="loginPassword" type="password" required autocomplete="current-password"></label><button type="submit">Sign in</button></form><form id="registerForm" class="hidden"><label>Display name<input id="registerName" required maxlength="120" autocomplete="name"></label><label>Email<input id="registerEmail" type="email" required autocomplete="email"></label><label>Password<input id="registerPassword" type="password" minlength="12" required autocomplete="new-password"></label><button type="submit">Create user account</button></form><div id="authError" class="error hidden" role="alert"></div></div></section>
+<section id="authScreen" class="authscreen"><div class="auth-layout">
+<div class="auth-overview">
+<a class="brand" href="/"><span class="brandmark">C</span><span>clarity<small>EXPLAINABLE HEALTHCARE</small></span></a>
+<p class="auth-tagline">Evidence, made visible.</p>
+<h1>Understand the prediction, not just the score.</h1>
+<p class="auth-lead">Clarity is an explainable AI healthcare research application that estimates heart-disease presence from 13 recorded measurements and shows what influenced the model's result.</p>
+<div class="auth-features" aria-label="Application features">
+<div class="auth-feature"><h2>Health assessment</h2><p>Enter 13 recorded measurements from a report to generate an assessment score and risk indicator.</p></div>
+<div class="auth-feature"><h2>Explainable AI</h2><p>See which recorded factors raised or lowered the model's prediction using SHAP-based explanations.</p></div>
+<div class="auth-feature"><h2>Assessment history</h2><p>Save and securely review previous assessments and their original explanations.</p></div>
+<div class="auth-feature"><h2>Model transparency</h2><p>Administrators can inspect model evaluation, thresholds, data lineage, and model versions.</p></div>
+</div>
+<p class="auth-technology">Built with FastAPI, scikit-learn, SHAP, PostgreSQL and SQLAlchemy.</p>
+<p class="auth-disclaimer">Educational research prototype. Not a medical diagnosis or treatment recommendation.</p>
+</div>
+<div class="authpanel"><p class="eyebrow">YOUR PRIVATE WORKSPACE</p><h2>Welcome to Clarity</h2><p class="auth-subtitle">Sign in to access your private assessment workspace.</p>
+<div class="authswitch"><button id="showLogin" type="button">Sign in</button><button id="showRegister" type="button" class="secondary">Create account</button></div>
+<form id="loginForm">
+<label for="loginEmail">Email<input id="loginEmail" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+<label for="loginPassword">Password<div class="auth-input-wrap"><input id="loginPassword" type="password" required autocomplete="current-password" placeholder="Enter your password"><button class="password-toggle" type="button" data-password-target="loginPassword" aria-label="Show password" aria-pressed="false"><svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.6 6.1A11 11 0 0 1 12 6c6.5 0 10 6 10 6a15 15 0 0 1-3.1 3.6M6.2 7.6C3.5 9.2 2 12 2 12s3.5 6 10 6c1.8 0 3.3-.5 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button></div></label>
+<button type="submit">Sign in</button>
+</form>
+<form id="registerForm" class="hidden">
+<label for="registerName">Display name<input id="registerName" required maxlength="120" autocomplete="name" placeholder="Your name"></label>
+<label for="registerEmail">Email<input id="registerEmail" type="email" required autocomplete="email" placeholder="you@example.com"></label>
+<label for="registerPassword">Password<div class="auth-input-wrap"><input id="registerPassword" type="password" minlength="8" maxlength="256" required autocomplete="new-password" placeholder="Create a password" aria-describedby="passwordRules"><button class="password-toggle" type="button" data-password-target="registerPassword" aria-label="Show password" aria-pressed="false"><svg class="eye-open" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-closed" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M10.6 6.1A11 11 0 0 1 12 6c6.5 0 10 6 10 6a15 15 0 0 1-3.1 3.6M6.2 7.6C3.5 9.2 2 12 2 12s3.5 6 10 6c1.8 0 3.3-.5 4.6-1.2M9.9 9.9a3 3 0 0 0 4.2 4.2"/><path d="M3 3l18 18"/></svg></button></div><small class="auth-field-hint">Use a password you do not reuse on other sites.</small></label>
+<ul id="passwordRules" class="password-rules" aria-live="polite">
+<li data-rule="length">At least 8 characters</li>
+<li data-rule="upper">1 uppercase letter</li>
+<li data-rule="lower">1 lowercase letter</li>
+<li data-rule="number">1 number</li>
+<li data-rule="special">1 special character</li>
+</ul>
+<button type="submit">Create user account</button>
+</form><div id="authError" class="error hidden" role="alert"></div></div></div></section>
 <aside class="sidebar"><a class="brand" href="/" aria-label="Clarity home"><span class="brandmark">C</span><span>clarity<small>EXPLAINABLE HEALTHCARE</small></span></a>
 <div id="workspaceLabel" class="navlabel">YOUR PRIVATE WORKSPACE</div><nav aria-label="Main navigation">
 <button data-tab="assessment" class="active" aria-current="page"><span>01</span>Assessment</button>
@@ -10,21 +86,70 @@
 <button data-tab="batch"><span>04</span>Batch analysis</button>
 <button data-tab="history"><span>05</span>Saved assessments</button></nav>
 <div class="sidefoot"><span class="statusdot"></span> <span id="accountLabel">Authenticated workspace</span><p>Educational use<br>No clinical deployment</p></div></aside>
-<main><header class="topbar"><span id="workspaceCrumb">Heart-health assessment / <b id="pageName">Assessment</b></span><span class="pill" id="modelStatus">Connectingâ€¦</span></header>
+<main><header class="topbar"><span id="workspaceCrumb">Heart-health assessment / <b id="pageName">Assessment</b></span><span class="pill" id="modelStatus">Connecting…</span></header>
 <div id="error" class="error hidden" role="alert"></div>
 <section id="tab-assessment" class="tab">
 <div class="pagehead"><div><p id="assessmentEyebrow" class="eyebrow">YOUR RECORDED MEASUREMENTS</p><h1 id="assessmentTitle">Your heart-health assessment</h1><p id="assessmentLead">Enter recorded measurements to see your assessment score and what influenced it.</p></div><span id="assessmentTag" class="tag">13 measurements</span></div>
 <div id="assessmentNotice" class="notice">Use recorded report values. Do not guess specialized test measurements.</div>
 <section id="assessmentFormCard" class="card inputcard"><div class="sectionhead"><div><h2 id="measurementsHeading">Your measurements</h2><p id="measurementsLead">Use the values recorded in the report. The prefilled example is demonstration data.</p></div><button id="resetExample" class="secondary">Reset example</button></div>
-<form id="assessmentForm"><div id="featureForm" class="formgrid"></div><div class="formfoot"><small id="inputEncodingNote">All 13 measurements are required.</small><button id="assessButton" type="submit">Assess & explain <span>â†—</span></button></div></form></section>
+<form id="assessmentForm"><div id="featureForm" class="formgrid"></div><div class="formfoot"><small id="inputEncodingNote">All 13 measurements are required.</small><button id="assessButton" type="submit">Assess & explain <span>↗</span></button></div></form></section>
 <div id="assessmentResult" class="hidden"></div>
 </section>
 <section id="tab-evaluation" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">MEASURE BEFORE YOU TRUST</p><h1>Model evaluation.</h1><p>Training validation, internal test performance, and the errors behind the averages.</p></div></div><div id="evaluationContent"></div></section>
 <section id="tab-data" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">TRACE THE EVIDENCE</p><h1>Data & model lineage.</h1><p>Inspect the dataset, training reference ranges, and saved model versions.</p></div></div><div id="dataContent"></div></section>
 <section id="tab-batch" class="tab hidden"><div class="pagehead"><div><p class="eyebrow">FROM ONE RECORD TO MANY</p><h1>Batch analysis.</h1><p>Validate and assess up to 250 records with row-level error reporting.</p></div></div>
-<section class="card"><div class="sectionhead"><div><h2>Upload a measurement CSV</h2><p>UTF-8 CSV Â· maximum 1 MB Â· exactly the 13 feature columns</p></div><button id="templateButton" class="secondary">Download template</button></div>
-<form id="batchForm"><label class="uploadbox" for="csvFile">Choose your CSV file<input id="csvFile" type="file" accept=".csv,text/csv" required></label><div class="formfoot"><small>Batch results are not saved to history. SHAP is available for individual assessments.</small><button id="batchButton" type="submit">Analyze CSV â†—</button></div></form><div id="batchResult"></div></section></section>
+<section class="card"><div class="sectionhead"><div><h2>Upload a measurement CSV</h2><p>UTF-8 CSV · maximum 1 MB · exactly the 13 feature columns</p></div><button id="templateButton" class="secondary">Download template</button></div>
+<form id="batchForm"><label class="uploadbox" for="csvFile">Choose your CSV file<input id="csvFile" type="file" accept=".csv,text/csv" required></label><div class="formfoot"><small>Batch results are not saved to history. SHAP is available for individual assessments.</small><button id="batchButton" type="submit">Analyze CSV ↗</button></div></form><div id="batchResult"></div></section></section>
 <section id="tab-history" class="tab hidden"><div class="pagehead"><div><p id="historyEyebrow" class="eyebrow">REVIEW YOUR SAVED RESULTS</p><h1 id="historyTitle">Your saved assessments</h1><p id="historyLead">Reopen the measurements and result saved with each assessment.</p></div><button id="refreshHistory" class="secondary">Refresh</button></div>
-<section class="card"><div class="sectionhead"><h2>Assessment archive</h2><label id="historyBandLabel">Risk indicator <select id="historyBand"><option value="">All indicators</option><option>LOW</option><option value="MEDIUM">MODERATE</option><option>HIGH</option></select></label></div><div id="historyContent"></div><div class="pager"><button id="previousPage" class="secondary">â† Previous</button><span id="historyPage"></span><button id="nextPage" class="secondary">Next â†’</button></div><p id="legacyHistoryNote" class="muted">Older v1 predictions remain available through the <a href="/history" target="_blank" rel="noopener">legacy history API</a>; they do not have stored v2 explanations.</p></section></section>
+<section class="card"><div class="sectionhead"><h2>Assessment archive</h2><label id="historyBandLabel">Risk indicator <select id="historyBand"><option value="">All indicators</option><option>LOW</option><option value="MEDIUM">MODERATE</option><option>HIGH</option></select></label></div><div id="historyContent"></div><div class="pager"><button id="previousPage" class="secondary">← Previous</button><span id="historyPage"></span><button id="nextPage" class="secondary">Next →</button></div><p id="legacyHistoryNote" class="muted">Older v1 predictions remain available through the <a href="/history" target="_blank" rel="noopener">legacy history API</a>; they do not have stored v2 explanations.</p></section></section>
 <footer>Clarity / Explainable Healthcare <span>Research evidence, with its limitations intact.</span></footer></main>
-<script src="/static/script.js?v=20260909-5" defer></script></body></html>
+<script src="/static/script.js?v=20260909-5" defer></script>
+<script>
+document.addEventListener("DOMContentLoaded",()=>{
+  document.querySelectorAll("[data-password-target]").forEach(button=>{
+    button.addEventListener("click",()=>{
+      const input=document.getElementById(button.dataset.passwordTarget);
+      if(!input)return;
+      const show=input.type==="password";
+      input.type=show?"text":"password";
+      button.setAttribute("aria-pressed",String(show));
+      button.setAttribute("aria-label",show?"Hide password":"Show password");
+    });
+  });
+
+  const password=document.getElementById("registerPassword");
+  const rules={
+    length:value=>value.length>=8,
+    upper:value=>/[A-Z]/.test(value),
+    lower:value=>/[a-z]/.test(value),
+    number:value=>/\d/.test(value),
+    special:value=>/[^A-Za-z0-9]/.test(value)
+  };
+  const updateRules=()=>{
+    if(!password)return;
+    Object.entries(rules).forEach(([name,test])=>{
+      const item=document.querySelector(`[data-rule="${name}"]`);
+      if(!item)return;
+      const met=test(password.value);
+      item.classList.toggle("met",met);
+      item.classList.toggle("unmet",password.value.length>0&&!met);
+    });
+  };
+  password?.addEventListener("input",updateRules);
+  updateRules();
+
+  document.getElementById("registerForm")?.addEventListener("submit",event=>{
+    const value=password?.value||"";
+    if(!Object.values(rules).every(test=>test(value))){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      password?.setCustomValidity("Use at least 8 characters with uppercase, lowercase, number, and special character.");
+      password?.reportValidity();
+    }else{
+      password?.setCustomValidity("");
+    }
+  }, true);
+  password?.addEventListener("input",()=>password.setCustomValidity(""));
+});
+</script>
+</body></html>

@@ -1,4 +1,5 @@
 import math
+import re
 from pydantic import Field
 from pydantic import BaseModel, ConfigDict, field_validator
 
@@ -137,7 +138,7 @@ class RegisterInput(BaseModel):
     model_config = ConfigDict(extra="forbid")
     email: str
     display_name: str = Field(min_length=1, max_length=120)
-    password: str = Field(min_length=12, max_length=256)
+    password: str = Field(min_length=8, max_length=256)
     role: str | None = None
 
     @field_validator("email")
@@ -146,6 +147,19 @@ class RegisterInput(BaseModel):
         value = value.strip()
         if "@" not in value or value.startswith("@") or value.endswith("@"):
             raise ValueError("Enter a valid email address.")
+        return value
+
+    @field_validator("password")
+    @classmethod
+    def strong_password(cls, value: str) -> str:
+        if not re.search(r"[A-Z]", value):
+            raise ValueError("Password must contain at least one uppercase letter.")
+        if not re.search(r"[a-z]", value):
+            raise ValueError("Password must contain at least one lowercase letter.")
+        if not re.search(r"\d", value):
+            raise ValueError("Password must contain at least one number.")
+        if not re.search(r"[^A-Za-z0-9]", value):
+            raise ValueError("Password must contain at least one special character.")
         return value
 
 
